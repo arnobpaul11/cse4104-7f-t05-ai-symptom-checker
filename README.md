@@ -30,3 +30,18 @@ Many people search the internet for their symptoms before deciding whether to se
 A rule-based red-flag layer works independently of the AI model and immediately recommends emergency care for serious warning signs such as chest pain or breathing difficulty.
 
 > **Disclaimer:** This project is an information and guidance tool only. It does not give a medical diagnosis and does not replace a licensed doctor.
+## Proposed Features
+
+**Must-have**
+- Authentication with User and Admin roles (JWT, bcrypt)
+- AI chat symptom intake with adaptive follow-up questions
+- Structured assessment: possible causes, urgency level, next steps
+- Red-flag emergency alerts (rules + AI)
+- Health profile (age, gender, existing conditions) used as context
+- Private symptom history
+- Downloadable PDF summary to share with a doctor
+- Bangla-English support
+- Admin dashboard (usage statistics, disclaimer and safety content management)
+
+**Should-have:** user feedback on AI responses and AI performance monitoring; personal health analytics charts.
+**Could-have:** interactive body map, voice input, nearby facility finder, audit logs and notifications.
