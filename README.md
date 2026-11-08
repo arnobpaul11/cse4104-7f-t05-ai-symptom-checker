@@ -45,3 +45,13 @@ A rule-based red-flag layer works independently of the AI model and immediately 
 
 **Should-have:** user feedback on AI responses and AI performance monitoring; personal health analytics charts.
 **Could-have:** interactive body map, voice input, nearby facility finder, audit logs and notifications.
+## Technology Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | React.js, Tailwind CSS |
+| Backend | Node.js, Express.js, JWT, bcrypt |
+| Database | PostgreSQL (Supabase) |
+| AI | Google Gemini API or OpenAI API (backend only) |
+| Deployment | Vercel (frontend), Render (backend) |
+| Tools | GitHub, Figma, Postman, draw.io, dbdiagram.io |
