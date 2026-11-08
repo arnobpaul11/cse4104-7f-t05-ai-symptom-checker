@@ -55,3 +55,27 @@ A rule-based red-flag layer works independently of the AI model and immediately 
 | AI | Google Gemini API or OpenAI API (backend only) |
 | Deployment | Vercel (frontend), Render (backend) |
 | Tools | GitHub, Figma, Postman, draw.io, dbdiagram.io |
+## Repository Structure
+
+```
+frontend/        React application
+backend/         Express API and AI service
+documentation/   Proposal, SRS, design diagrams, reports
+screenshots/     UI and progress screenshots
+presentation/    Slides
+testing/         Test cases, AI scenarios, bug reports
+```
+
+## Branches
+
+`main` (stable) | `development` (integration) | `frontend` | `backend` | `ai-integration`
+
+## Installation
+
+Installation instructions will be added when the first working version is ready (Week 6 onward).
+Secrets such as API keys must be kept in a local `.env` file (see `backend/.env.example`) and never committed.
+
+## Deployment Link
+
+To be added in Week 11.
+
