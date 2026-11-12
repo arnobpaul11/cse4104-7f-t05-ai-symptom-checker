@@ -1,81 +1,100 @@
-# cse4104-7f-t05-ai-symptom-checker
-This is a software development group project called ai symptom checker .
-AI Symptom Checker 
+# AI Symptom Checker
 
 **CSE 4104 - Software Development III** | Northern University of Business and Technology, Khulna
-Department of Computer Science and Engineering
 
-> **Status:** Week 2 - Proposal stage
+A web-based health guidance tool where a user describes symptoms in plain **Bangla or English**, answers adaptive AI follow-up questions, and receives possible conditions to consider, a suggested urgency level, and general next steps.
+
+> **Disclaimer:** This is an information and guidance tool only. It does not give a medical diagnosis and does not replace a licensed doctor. In an emergency, seek medical care immediately.
 
 ## Team Information
 
-| Field | Details |
+| Field | Value |
 |---|---|
 | Team Name | CSE4104-7F-T05 |
 | Section | 7F |
-| Project Title | AI Symptom Checker  |
+| Project Title | AI Symptom Checker |
 | Team Leader | Arnob Paul |
 
-| # | Name | Student ID |
+| # | Member | Student ID |
 |---|---|---|
 | 1 | Arnob Paul (Team Leader) | 230321390 |
 | 2 | Nishat Salsabil Mou | 230321543 |
 | 3 | Shahriar Rashid Nibir | 230321412 |
 | 4 | Mridul Biswas | 230321400 |
 
-## Project Description
+## Objectives
 
-Many people search the internet for their symptoms before deciding whether to see a doctor, and the results are often confusing, generic, or alarming. This web application lets a registered user describe symptoms in plain Bangla or English and answer a few AI-generated follow-up questions. The system then returns a structured result: possible causes to consider, a suggested urgency level (self-care, see a doctor soon, or emergency care), and general next steps.
+- Chat-based symptom intake in Bangla and English with adaptive follow-up questions
+- Structured result: possible conditions, urgency level (self-care / see a doctor soon / emergency), next steps
+- Two-layer red-flag emergency system (rule-based + AI)
+- Private health profile and symptom history, PDF summary for doctors
+- Admin dashboard, deployed online, tested with 30+ AI scenarios
 
-A rule-based red-flag layer works independently of the AI model and immediately recommends emergency care for serious warning signs such as chest pain or breathing difficulty.
+## Features
 
-> **Disclaimer:** This project is an information and guidance tool only. It does not give a medical diagnosis and does not replace a licensed doctor.
-## Proposed Features
+| ID | Feature | Priority |
+|---|---|---|
+| F1 | Authentication and roles (User, Admin) | Must |
+| F2 | AI chat symptom intake | Must |
+| F3 | Structured assessment | Must |
+| F4 | Red-flag emergency alert | Must |
+| F5 | Profile-aware assessment | Must |
+| F6 | Symptom history | Must |
+| F7 | PDF health summary | Must |
+| F8 | Bangla-English support | Must |
+| F9 | Admin dashboard | Must |
+| F10-F11 | Feedback and AI monitoring, personal analytics | Should |
+| F12-F15 | Body map, voice input, facility finder, audit logs | Could |
 
-**Must-have**
-- Authentication with User and Admin roles (JWT, bcrypt)
-- AI chat symptom intake with adaptive follow-up questions
-- Structured assessment: possible causes, urgency level, next steps
-- Red-flag emergency alerts (rules + AI)
-- Health profile (age, gender, existing conditions) used as context
-- Private symptom history
-- Downloadable PDF summary to share with a doctor
-- Bangla-English support
-- Admin dashboard (usage statistics, disclaimer and safety content management)
-
-**Should-have:** user feedback on AI responses and AI performance monitoring; personal health analytics charts.
-**Could-have:** interactive body map, voice input, nearby facility finder, audit logs and notifications.
 ## Technology Stack
 
 | Layer | Technology |
 |---|---|
-| Frontend | React.js, Tailwind CSS |
+| Frontend | React.js, Tailwind CSS, Recharts |
 | Backend | Node.js, Express.js, JWT, bcrypt |
 | Database | PostgreSQL (Supabase) |
-| AI | Google Gemini API or OpenAI API (backend only) |
-| Deployment | Vercel (frontend), Render (backend) |
+| AI | Google Gemini API (primary) or OpenAI API, via a provider-independent module |
+| PDF | PDFKit |
+| Deployment | Vercel (frontend), Render (backend), Supabase (database) |
 | Tools | GitHub, Figma, Postman, draw.io, dbdiagram.io |
+
 ## Repository Structure
 
 ```
-frontend/        React application
-backend/         Express API and AI service
-documentation/   Proposal, SRS, design diagrams, reports
-screenshots/     UI and progress screenshots
-presentation/    Slides
-testing/         Test cases, AI scenarios, bug reports
+cse4104-7f-t05-ai-symptom-checker/
+├── frontend/
+├── backend/
+├── documentation/
+│   ├── CSE4104-7F-T05_Proposal.pdf
+│   ├── CSE4104-7F-T05_SRS.pdf
+│   ├── CSE4104-7F-T05_UseCaseDiagram.pdf
+│   ├── CSE4104-7F-T05_ERDiagram.pdf
+│   ├── CSE4104-7F-T05_ERDiagram.dbml
+│   └── CSE4104-7F-T05_ArchitectureDiagram.pdf
+├── screenshots/
+├── presentation/
+├── testing/
+├── .env.example
+├── .gitignore
+└── README.md
 ```
+
+## Progress
+
+| Week | Deliverable | Status |
+|---|---|---|
+| 1-2 | Team, idea, proposal, project plan | Done |
+| 3 | SRS, use case diagram, ER diagram, architecture diagram | Done |
+| 4 | System design, API structure | Next |
 
 ## Branches
 
-`main` (stable) | `development` (integration) | `frontend` | `backend` | `ai-integration`
+`main` (stable), `development` (integration), `frontend`, `backend`, `ai-integration`
 
 ## Installation
 
-Installation instructions will be added when the first working version is ready (Week 6 onward).
-Secrets such as API keys must be kept in a local `.env` file (see `backend/.env.example`) and never committed.
+Setup instructions will be added in Week 6-7 when backend and frontend code is added. Secrets go in `.env` (see `.env.example`) and are never committed.
 
-## Deployment Link
+## Deployment
 
-To be added in Week 11.
-It is nibir.
+Live link: not yet deployed (planned for Week 11).
