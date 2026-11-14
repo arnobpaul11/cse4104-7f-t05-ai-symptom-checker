@@ -1,0 +1,99 @@
+// CSE4104-7F-T05 - AI Symptom Checker - paste into https://dbdiagram.io
+
+Table users {
+  user_id uuid [pk]
+  full_name varchar(100)
+  email varchar(150) [unique]
+  password_hash varchar(255)
+  role varchar(30) // ENUM(USER, ADMIN)
+  preferred_language varchar(30) // ENUM(bn, en)
+  is_active boolean [default: true]
+  created_at timestamp
+}
+
+Table health_profiles {
+  profile_id uuid [pk]
+  user_id uuid [unique]
+  date_of_birth date
+  gender varchar(20)
+  allergies text
+  existing_conditions text
+  current_medications text
+  updated_at timestamp
+}
+
+Table chat_sessions {
+  session_id uuid [pk]
+  user_id uuid
+  title varchar(150)
+  language varchar(30) // ENUM(bn, en)
+  status varchar(30) // ENUM(OPEN, COMPLETED)
+  started_at timestamp
+  ended_at timestamp
+}
+
+Table messages {
+  message_id uuid [pk]
+  session_id uuid
+  sender varchar(30) // ENUM(USER, AI, SYSTEM)
+  content text
+  created_at timestamp
+}
+
+Table assessments {
+  assessment_id uuid [pk]
+  session_id uuid [unique]
+  urgency_level varchar(30) // ENUM(SELF_CARE, SEE_DOCTOR_SOON, EMERGENCY)
+  summary text
+  next_steps text
+  red_flag_triggered boolean [default: false]
+  red_flag_source varchar(30) // ENUM(NONE, RULE, AI)
+  ai_model varchar(50)
+  created_at timestamp
+}
+
+Table assessment_conditions {
+  condition_id uuid [pk]
+  assessment_id uuid
+  condition_name varchar(150)
+  explanation text
+  rank_order int
+}
+
+Table feedback {
+  feedback_id uuid [pk]
+  assessment_id uuid
+  user_id uuid
+  rating varchar(30) // ENUM(UP, DOWN)
+  comment text
+  created_at timestamp
+}
+
+Table red_flag_rules {
+  rule_id uuid [pk]
+  created_by uuid
+  pattern varchar(200)
+  language varchar(30) // ENUM(bn, en)
+  description text
+  is_active boolean [default: true]
+  created_at timestamp
+}
+
+Table system_content {
+  content_id uuid [pk]
+  updated_by uuid
+  content_type varchar(30) // ENUM(DISCLAIMER, SAFETY_NOTICE)
+  language varchar(30) // ENUM(bn, en)
+  body text
+  updated_at timestamp
+}
+
+Ref: health_profiles.user_id - users.user_id [delete: cascade]
+Ref: chat_sessions.user_id > users.user_id [delete: cascade]
+Ref: messages.session_id > chat_sessions.session_id [delete: cascade]
+Ref: assessments.session_id - chat_sessions.session_id [delete: cascade]
+Ref: assessment_conditions.assessment_id > assessments.assessment_id [delete: cascade]
+Ref: feedback.assessment_id > assessments.assessment_id [delete: cascade]
+Ref: feedback.user_id > users.user_id [delete: cascade]
+Ref: red_flag_rules.created_by > users.user_id [delete: cascade]
+Ref: system_content.updated_by > users.user_id [delete: cascade]
