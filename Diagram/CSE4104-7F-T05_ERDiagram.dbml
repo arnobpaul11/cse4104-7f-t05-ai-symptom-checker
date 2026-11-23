@@ -1,0 +1,108 @@
+// CSE4104-7F-T05 - AI Symptom Checker - ER diagram v2 (Week 04)
+// Paste into https://dbdiagram.io
+// Changes from Week 3 are marked  // NEW  or  // CHANGED
+
+Table users {
+  user_id uuid [pk]
+  full_name varchar(100) [not null]
+  email varchar(150) [unique, not null]
+  password_hash varchar(255) [not null]
+  role varchar(30) [not null, default: 'USER'] // ENUM(USER, ADMIN)
+  preferred_language varchar(30) [default: 'en'] // ENUM(bn, en)
+  is_active boolean [default: true]
+  created_at timestamp [default: `now()`]
+}
+
+Table health_profiles {
+  profile_id uuid [pk]
+  user_id uuid [unique, not null]
+  date_of_birth date
+  gender varchar(20)
+  allergies text
+  existing_conditions text
+  current_medications text
+  updated_at timestamp
+}
+
+Table chat_sessions {
+  session_id uuid [pk]
+  user_id uuid [not null]
+  title varchar(150)
+  language varchar(30) // ENUM(bn, en)
+  status varchar(30) [default: 'OPEN'] // ENUM(OPEN, COMPLETED)
+  followup_count int [default: 0] // NEW: enforces max rounds (FR-13)
+  started_at timestamp [default: `now()`]
+  ended_at timestamp
+  indexes { (user_id, started_at) }
+}
+
+Table messages {
+  message_id uuid [pk]
+  session_id uuid [not null]
+  sender varchar(30) [not null] // ENUM(USER, AI, SYSTEM)
+  content text [not null]
+  red_flag_hit boolean [default: false] // NEW: Layer 1 matched this message (FR-15, FR-16)
+  created_at timestamp [default: `now()`]
+  indexes { (session_id, created_at) }
+}
+
+Table assessments {
+  assessment_id uuid [pk]
+  session_id uuid [unique, not null]
+  urgency_level varchar(30) [not null] // ENUM(SELF_CARE, SEE_DOCTOR_SOON, EMERGENCY)
+  summary text
+  next_steps text
+  red_flag_triggered boolean [default: false]
+  red_flag_source varchar(30) [default: 'NONE'] // ENUM(NONE, RULE, AI)
+  ai_model varchar(50)
+  validation_status varchar(30) [default: 'VALID'] // NEW: ENUM(VALID, RETRIED, FALLBACK) (FR-20, FR-35)
+  created_at timestamp [default: `now()`]
+}
+
+Table assessment_conditions {
+  condition_id uuid [pk]
+  assessment_id uuid [not null]
+  condition_name varchar(150) [not null]
+  explanation text
+  rank_order int
+}
+
+Table feedback {
+  feedback_id uuid [pk]
+  assessment_id uuid [not null]
+  user_id uuid [not null]
+  rating varchar(30) [not null] // ENUM(UP, DOWN)
+  comment text
+  created_at timestamp [default: `now()`]
+  indexes { (assessment_id, user_id) [unique] } // NEW: one rating per user per assessment
+}
+
+Table red_flag_rules {
+  rule_id uuid [pk]
+  created_by uuid // CHANGED: nullable, ON DELETE SET NULL (rules survive if the admin account is removed)
+  pattern varchar(200) [not null]
+  language varchar(30) // ENUM(bn, en)
+  description text
+  is_active boolean [default: true]
+  created_at timestamp [default: `now()`]
+}
+
+Table system_content {
+  content_id uuid [pk]
+  updated_by uuid // CHANGED: nullable, ON DELETE SET NULL
+  content_type varchar(30) [not null] // ENUM(DISCLAIMER, SAFETY_NOTICE)
+  language varchar(30) [not null] // ENUM(bn, en)
+  body text [not null]
+  updated_at timestamp
+  indexes { (content_type, language) [unique] } // NEW: exactly one text per type and language
+}
+
+Ref: health_profiles.user_id - users.user_id [delete: cascade]
+Ref: chat_sessions.user_id > users.user_id [delete: cascade]
+Ref: messages.session_id > chat_sessions.session_id [delete: cascade]
+Ref: assessments.session_id - chat_sessions.session_id [delete: cascade]
+Ref: assessment_conditions.assessment_id > assessments.assessment_id [delete: cascade]
+Ref: feedback.assessment_id > assessments.assessment_id [delete: cascade]
+Ref: feedback.user_id > users.user_id [delete: cascade]
+Ref: red_flag_rules.created_by > users.user_id [delete: set null]
+Ref: system_content.updated_by > users.user_id [delete: set null]
